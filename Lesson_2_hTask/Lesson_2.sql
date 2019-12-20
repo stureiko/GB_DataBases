@@ -5,4 +5,4 @@ CREATE TABLE Users (
     name char(50) NOT NULL,
     surname char(50));
 CREATE UNIQUE INDEX UserID ON Users(id);
-
+CREATE DATABASE newDB;
