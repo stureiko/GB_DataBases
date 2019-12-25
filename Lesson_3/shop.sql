@@ -24,7 +24,8 @@ CREATE TABLE IF NOT EXISTS products (
 	price DECIMAL(11,2) COMMENT 'Цнна товара',
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
 	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время последнего обновления',
-	catalog_id INT UNSIGNED
+	catalog_id INT UNSIGNED,
+	KEY index_of_catalog_id (catalog_id)
 ) COMMENT = 'Товарные позиции';
 
 DROP TABLE IF EXISTS orders;
@@ -32,7 +33,8 @@ CREATE TABLE IF NOT EXISTS orders (
 	id SERIAL PRIMARY KEY,
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
 	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время последнего обновления',
-	user_id INT UNSIGNED
+	user_id INT UNSIGNED,
+	KEY index_of_user_id (user_id)
 ) COMMENT = 'Заказы';
 
 DROP TABLE IF EXISTS oders_products;
@@ -54,7 +56,9 @@ CREATE TABLE IF NOT EXISTS discounts(
 	finished_at DATETIME,
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
 	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время последнего обновления',
-	discount FLOAT UNSIGNED COMMENT 'Величина скидки от 0.0 до 1.0'
+	discount FLOAT UNSIGNED COMMENT 'Величина скидки от 0.0 до 1.0',
+	KEY index_of_user_id (user_id),
+	KEY index_of_product_id (product_id)
 ) COMMENT = 'Скидки';
 
 DROP TABLE IF EXISTS storehouses;
