@@ -3,13 +3,13 @@ USE shop;
 
 DROP TABLE IF EXISTS catalogs;
 CREATE TABLE IF NOT EXISTS catalogs (
-	id INT UNSIGNED NOT NULL,
+	id SERIAL PRIMARY KEY,
 	name VARCHAR(255) COMMENT 'Название раздела'
 ) COMMENT = 'Разделы интернет магазина';
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS users (
-	id INT UNSIGNED NOT NULL,
+	id SERIAL PRIMARY KEY,
 	name VARCHAR(255) COMMENT 'Имя пользователя',
 	birthday_at DATE COMMENT 'Дата рождения',
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 DROP TABLE IF EXISTS products;
 CREATE TABLE IF NOT EXISTS products (
-	id INT UNSIGNED NOT NULL,
+	id SERIAL PRIMARY KEY,
 	name VARCHAR(255) COMMENT 'Название',
 	description TEXT COMMENT 'Описание товара',
 	price DECIMAL(11,2) COMMENT 'Цнна товара',
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS products (
 
 DROP TABLE IF EXISTS orders;
 CREATE TABLE IF NOT EXISTS orders (
-	id INT UNSIGNED NOT NULL,
+	id SERIAL PRIMARY KEY,
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
 	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время последнего обновления',
 	user_id INT UNSIGNED
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS orders (
 
 DROP TABLE IF EXISTS oders_products;
 CREATE TABLE IF NOT EXISTS oders_products(
-	id INT UNSIGNED NOT NULL,
+	id SERIAL PRIMARY KEY,
 	order_id INT UNSIGNED,
 	product_id INT UNSIGNED,
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS oders_products(
 
 DROP TABLE IF EXISTS discounts;
 CREATE TABLE IF NOT EXISTS discounts(
-	id INT UNSIGNED NOT NULL,
+	id SERIAL PRIMARY KEY,
 	user_id INT UNSIGNED,
 	product_id INT UNSIGNED,
 	started_at DATETIME,
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS discounts(
 
 DROP TABLE IF EXISTS storehouses;
 CREATE TABLE IF NOT EXISTS storehouses(
-	id INT UNSIGNED NOT NULL,
+	id SERIAL PRIMARY KEY,
 	name VARCHAR(255) COMMENT 'Название склада',
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
 	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время последнего обновления'
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS storehouses(
 
 DROP TABLE IF EXISTS storehouses_products;
 CREATE TABLE IF NOT EXISTS storehouses_products(
-	id INT UNSIGNED NOT NULL,
+	id SERIAL PRIMARY KEY,
 	storehouse_id INT UNSIGNED,
 	product_id INT UNSIGNED,
 	value INT UNSIGNED COMMENT 'Запас товарной позиции на складе',
