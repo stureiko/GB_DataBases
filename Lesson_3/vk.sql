@@ -1,61 +1,14 @@
--- Урок 3. Введение в проектирование БД.
-
--- Варианты решения ДЗ.
-
--- Задание 2
--- Создайте базу данных example, разместите в ней таблицу users, состоящую
--- из двух столбцов, числового id и строкового name.
-CREATE DATABASE example;
-USE example;
-
-CREATE TABLE IF NOT EXISTS users (
-  id SERIAL,
-  name VARCHAR(255) NOT NULL UNIQUE
-);
-
--- Задание 3
--- Создайте дамп базы данных example из предыдущего задания, разверните
--- содержимое дампа в новую базу данных sample.
-
--- Создаём дамп БД example
-mysqldump example > example.sql
-
--- Создаём БД sample
-mysql -e 'CREATE DATABASE sample'
-
--- Загружаем дамп в БД sample
-mysql sample < example.sql
-
--- Задание 4
--- (по желанию) Ознакомьтесь более подробно с документацией утилиты
--- mysqldump. Создайте дамп единственной таблицы help_keyword базы данных
--- mysql. Причем добейтесь того, чтобы дамп содержал только первые 100
--- строк таблицы.
-
-mysqldump mysql help_keyword --where='TRUE LIMIT 100' > help_keyword_report.sql
-
--- Случай импорта из системной БД mysql
--- в 4ом задании получаю ошибку 
--- the table 'help_keyword' may not be created in the reserved tablespace
-
--- Найти
--- ) /*!50100 TABLESPACE mysql */ ENGINE=InnoDB DEFAULT
--- Удалить  /*!50100 TABLESPACE mysql */
-
-
-
-
 -- Создание БД для социальной сети ВКонтакте
-https://vk.com/geekbrainsru
+-- https://vk.com/geekbrainsru
 
 -- Создаём БД
-CREATE DATABASE vk;
+CREATE DATABASE IF NOT EXISTS vk;
 
 -- Делаем её текущей
 USE vk;
 
 -- Создаём таблицу пользователей
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,  
   first_name VARCHAR(100) NOT NULL,
   last_name VARCHAR(100) NOT NULL,
@@ -66,7 +19,7 @@ CREATE TABLE users (
 );
 
 -- Таблица профилей
-CREATE TABLE profiles (
+CREATE TABLE IF NOT EXISTS profiles (
   user_id INT UNSIGNED NOT NULL PRIMARY KEY,
   sex CHAR(1) NOT NULL,
   birthday DATE,
@@ -75,7 +28,7 @@ CREATE TABLE profiles (
 );
 
 -- Таблица сообщений
-CREATE TABLE messages (
+CREATE TABLE IF NOT EXISTS messages (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, 
   from_user_id INT UNSIGNED NOT NULL,
   to_user_id INT UNSIGNED NOT NULL,
@@ -86,7 +39,7 @@ CREATE TABLE messages (
 );
 
 -- Таблица дружбы
-CREATE TABLE friendship (
+CREATE TABLE IF NOT EXISTS friendship (
   user_id INT UNSIGNED NOT NULL,
   friend_id INT UNSIGNED NOT NULL,
   status_id INT UNSIGNED NOT NULL,
@@ -96,27 +49,27 @@ CREATE TABLE friendship (
 );
 
 -- Таблица статусов дружеских отношений
-CREATE TABLE friendship_statuses (
+CREATE TABLE IF NOT EXISTS friendship_statuses (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(150) NOT NULL UNIQUE
 );
 
 
 -- Таблица групп
-CREATE TABLE communities (
+CREATE TABLE IF NOT EXISTS communities (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(150) NOT NULL UNIQUE
 );
 
 -- Таблица связи пользователей и групп
-CREATE TABLE communities_users (
+CREATE TABLE IF NOT EXISTS communities_users (
   community_id INT UNSIGNED NOT NULL,
   user_id INT UNSIGNED NOT NULL,
   PRIMARY KEY (community_id, user_id)
 );
 
 -- Таблица медиафайлов
-CREATE TABLE media (
+CREATE TABLE IF NOT EXISTS media (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   media_type_id INT UNSIGNED NOT NULL,
   user_id INT UNSIGNED NOT NULL,
@@ -128,7 +81,7 @@ CREATE TABLE media (
 );
 
 -- Таблица типов медиафайлов
-CREATE TABLE media_types (
+CREATE TABLE IF NOT EXISTS media_types (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) NOT NULL UNIQUE
 );
