@@ -86,13 +86,3 @@ CREATE TABLE IF NOT EXISTS media_types (
   name VARCHAR(255) NOT NULL UNIQUE
 );
 
-
--- Рекомендуемый стиль написания кода SQL
--- https://www.sqlstyle.guide/ru/
-
--- Заполняем таблицы с учётом отношений 
--- на http://filldb.info
-
--- Документация
--- https://dev.mysql.com/doc/refman/8.0/en/
--- http://www.rldp.ru/mysql/mysql80/index.htm
