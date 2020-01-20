@@ -18,7 +18,7 @@
 -- #
 -- #
 -- # ************************************************
-
+USE GeekBrainsDB;
 -- Задание 1
 UPDATE users SET created_at = NOW(), updated_at = NOW();
 
@@ -28,8 +28,10 @@ UPDATE users SET created_at = DATE_FORMAT(STR_TO_DATE(created_at, '%d.%m.%Y %H:%
 ALTER TABLE users MODIFY COLUMN created_at DATETIME, updated_at DATETIME;
 
 -- Задание 3
--- Мне не нравится решение, но лучше не понял как сделать
-SELECT *, value as val FROM tbl WHERE value > 0
-UNION ALL
-SELECT*, value + (SELECT MAX(value) FROM tbl) + 1 AS val FROM tbl WHERE value = 0
-ORDER BY val;
+
+SELECT
+  *
+FROM
+  tbl
+ORDER BY
+  value = 0, value;
