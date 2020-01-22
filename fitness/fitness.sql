@@ -18,7 +18,6 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- типы пользователей
--- SELECT COUNT(*) FROM users_type;
 -- DROP TABLE IF EXISTS users_type;
 CREATE TABLE IF NOT EXISTS users_type (
 	id INT UNSIGNED NOT NULL PRIMARY KEY,
@@ -58,8 +57,8 @@ CREATE TABLE IF NOT EXISTS media_types (
 );
 
 -- Таблица типов курсов
--- DROP TABLE IF EXISTS type_courses;
-CREATE TABLE IF NOT EXISTS type_courses (
+-- DROP TABLE IF EXISTS courses_type;
+CREATE TABLE IF NOT EXISTS courses_type (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	name VARCHAR(255) NOT NULL,
 	description TEXT 
@@ -72,6 +71,13 @@ CREATE TABLE IF NOT EXISTS courses (
 	name VARCHAR(255) NOT NULL,
 	description TEXT,
 	course_type_id INT UNSIGNED NOT NULL
+);
+
+-- Таблица с - анатомическая группа - на какую мышцу или группу будет упражнение
+CREATE TABLE IF NOT EXISTS anatomy (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(255) NOT NULL,
+	description TEXT,
 );
 
 -- Таблица упраженений
