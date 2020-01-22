@@ -18,9 +18,11 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- типы пользователей
-CREATE TABLE IF NOT EXISTS user_type (
+-- SELECT COUNT(*) FROM users_type;
+-- DROP TABLE IF EXISTS users_type;
+CREATE TABLE IF NOT EXISTS users_type (
 	id INT UNSIGNED NOT NULL PRIMARY KEY,
-	decription VARCHAR(255) NOT NULL
+	description VARCHAR(255) NOT NULL
 );
 
 -- Таблица профилей

@@ -1,0 +1,16 @@
+Выполните следующий код:
+SELECT (DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(birthday, '%Y')) AS Average_Age 
+FROM profiles LIMIT 5;
+SELECT
+(TIMESTAMPDIFF(YEAR, birthday, NOW())) AS Average_Age
+FROM
+profiles LIMIT 5;
+
+Можно видеть что округление присходит по разному.
+Отлично!
+
+
+Очень хорошо что уже начали работать над курсовым проектом, структура БД создана.
+1. decription в user_type - опечатка.
+2. Имена таблиц лучше задавать единообразно, у вас есть вариант в единственном числе - user_type.
+Отлично поработали!
