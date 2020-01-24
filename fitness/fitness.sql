@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS media (
 CREATE TABLE IF NOT EXISTS media_types (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) NOT NULL UNIQUE,
-  training_id INT UNSIGNED NOT NULL -- связь с курсом
+  training_id INT UNSIGNED NOT NULL -- связь с курсом тренировок 
 );
 
 -- Таблица типов курсов
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS courses (
 CREATE TABLE IF NOT EXISTS anatomy (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	name VARCHAR(255) NOT NULL,
-	description TEXT,
+	description TEXT
 );
 
 -- Таблица упраженений
@@ -87,7 +87,8 @@ CREATE TABLE IF NOT EXISTS exercises (
 	name VARCHAR(255) NOT NULL,
 	description TEXT,
 	courses_trainings_id INT UNSIGNED NOT NULL,
-	media_id INT UNSIGNED NOT NULL
+	media_id INT UNSIGNED NOT NULL,
+	anatomy_id INT UNSIGNED NOT NULL  -- связь с анатомической группой
 );
 
 -- Таблица тренировок (для составления курсов)
@@ -112,7 +113,7 @@ CREATE TABLE IF NOT EXISTS regions (
 	city_id INT UNSIGNED NOT NULL
 );
 
--- таблица тренировок 
+-- таблица тренировок, которые проводит тренер
 CREATE TABLE IF NOT EXISTS trainings (
 	id INT UNSIGNED NOT NULL PRIMARY KEY,
 	user_id INT UNSIGNED NOT NULL,
