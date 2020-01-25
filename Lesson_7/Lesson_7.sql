@@ -15,8 +15,12 @@ USE shop;
 -- Задание 1. Составьте список пользователей users, которые осуществили хотя бы один заказ orders в интернет магазине.
 SELECT name FROM users u2 WHERE id IN (SELECT user_id FROM orders);
 
+SELECT name FROM users JOIN orders WHERE users.id = orders.user_id;
+
 -- Задание 2. Выведите список товаров products и разделов catalogs, который соответствует товару.
 SELECT name, (SELECT name FROM catalogs c2 WHERE c2.id = p2.catalog_id) AS 'Catalog name' FROM products p2 WHERE name LIKE 'AMD%';
+
+SELECT c1.name, p1.name FROM catalogs c1 JOIN products p1 WHERE c1.id = p1.catalog_id AND p1.name LIKE 'AMD%' ;
 
 -- Задание 3. (по желанию) Пусть имеется таблица рейсов flights (id, from, to) и таблица городов cities (label, name). 
 -- Поля from, to и label содержат английские названия городов, поле name — русское. Выведите список рейсов flights с русскими названиями городов.
@@ -49,6 +53,9 @@ INSERT INTO cities VALUES
 
 -- получаем все содержимое таблицы полетов, заменяя метки городов на их русские названия
 SELECT id, (SELECT name FROM cities c1 WHERE c1.label = f1.f_from) AS 'From', (SELECT name FROM cities c1 WHERE c1.label = f1.f_to) AS 'To' FROM flights f1;
+
+SELECT DISTINCT f1.id, (SELECT name FROM cities c1 WHERE c1.label = f1.f_from) AS 'From', (SELECT name FROM cities c1 WHERE c1.label = f1.f_to) AS 'To'
+FROM flights f1 JOIN cities c1 WHERE f1.f_from = c1.label OR f1.f_to = c1.label;
 
 
 
