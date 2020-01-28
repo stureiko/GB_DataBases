@@ -81,21 +81,17 @@ ALTER TABLE likes
 
 -- для posts
 DESCRIBE posts;
+
 ALTER TABLE posts
 	ADD CONSTRAINT posts_user_id_fk
 		FOREIGN KEY (user_id) REFERENCES users(id)
 			ON UPDATE CASCADE;
 
--- !! НЕ СРАБОТАЛО - ОШИБКА
--- ALTER TABLE posts
--- 	ADD CONSTRAINT posts_media_id_fk
--- 		FOREIGN KEY (media_id) REFERENCES media(id);
-
--- SQL Error [1452] [23000]: Cannot add or update a child row: 
--- a foreign key constraint fails (`vk`.`#sql-8907_63`, CONSTRAINT `posts_media_id_fk` 
--- FOREIGN KEY (`media_id`) REFERENCES `media` (`id`))
-
-
+ ALTER TABLE posts
+	ADD CONSTRAINT posts_media_id_fk
+		FOREIGN KEY (media_id) REFERENCES media(id);
+		
+	
 -- для media
 DESCRIBE media;
 
@@ -124,15 +120,10 @@ ALTER TABLE communities_users
 		FOREIGN KEY (community_id) REFERENCES communities(id)
 			ON UPDATE CASCADE;
 
--- !! НЕ СРАБОТАЛО - ОШИБКА 
--- ALTER TABLE communities_users
--- 	ADD CONSTRAINT communities_user_id_fk
--- 		FOREIGN KEY (user_id) REFERENCES users(id)
--- 			ON UPDATE CASCADE;
-
--- SQL Error [1452] [23000]: Cannot add or update a child row: 
--- a foreign key constraint fails (`vk`.`#sql-8907_63`, CONSTRAINT `communities_user_id_fk` 
--- FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE)
+ALTER TABLE communities_users
+	ADD CONSTRAINT communities_user_id_fk
+		FOREIGN KEY (user_id) REFERENCES users(id)
+			ON UPDATE CASCADE;
 
  -- для meetengs_users
  DESCRIBE meetings_users;
@@ -145,5 +136,49 @@ ALTER TABLE meetings_users
 		FOREIGN KEY (user_id) REFERENCES users(id)
 		ON UPDATE CASCADE;
  
+-- # 3. Переписать запросы, заданые к ДЗ урока 6 с использованием JOIN (четыре запроса).
+-- # 3.1. Пусть задан некоторый пользователь. Из всех друзей этого пользователя найдите человека, который больше всех общался с нашим пользователем.
+-- найдем всех друзей
+
+
+SELECT 
+	(SELECT CONCAT_WS(' ', first_name, last_name) FROM users u2 WHERE id = from_user_id) AS User , COUNT(from_user_id) AS Num_messages 
+		FROM messages m JOIN 
+			(SELECT user_id AS id FROM friendship f2 WHERE friend_id = 10 AND status_id = 3
+			UNION
+			SELECT friend_id AS id FROM friendship WHERE user_id = 10 AND status_id = 3) AS Fr
+		ON m.to_user_id = Fr.id OR m.from_user_id = Fr.id
+		GROUP BY from_user_id
+		ORDER BY Num_messages DESC
+		LIMIT 1;
+	
+
+-- # 3.2. Подсчитать общее количество лайков, которые получили 10 самых молодых пользователей.
+
+SELECT CONCAT_WS(' ', first_name, last_name) AS User_name FROM users u2 
+	JOIN
+		(SELECT sp.id, COUNT(*) AS Total_likes
+		FROM likes l
+		JOIN 
+			(SELECT user_id AS id FROM profiles p2 ORDER BY birthday DESC) AS sp
+		ON l.target_id = sp.id		
+		GROUP BY target_id
+		ORDER BY Total_likes DESC
+		LIMIT 10) AS us
+	ON u2.id = us.id;
+
+
+-- # 3.3. Определить кто больше поставил лайков (всего) - мужчины или женщины?
+
+SELECT CASE(p2.sex)
+		WHEN 'm' THEN 'man'
+		WHEN 'f' THEN 'woman'
+	END AS sex, COUNT(*) FROM likes l2 JOIN
+	profiles p2
+	ON l2.user_id = p2.user_id
+	GROUP BY p2.sex;
+
+-- # 3.4. Найти 10 пользователей, которые проявляют наименьшую активность в использовании социальной сети.
+
 
    
