@@ -173,12 +173,24 @@ SELECT CONCAT_WS(' ', first_name, last_name) AS User_name FROM users u2
 SELECT CASE(p2.sex)
 		WHEN 'm' THEN 'man'
 		WHEN 'f' THEN 'woman'
-	END AS sex, COUNT(*) FROM likes l2 JOIN
+	END AS sex, COUNT(*) AS Total_likes FROM likes l2 JOIN
 	profiles p2
 	ON l2.user_id = p2.user_id
-	GROUP BY p2.sex;
+	GROUP BY p2.sex
+	ORDER BY Total_likes DESC;
 
 -- # 3.4. Найти 10 пользователей, которые проявляют наименьшую активность в использовании социальной сети.
+-- в уроке 6 использовали 
+SELECT 
+	CONCAT_WS(' ', first_name, last_name) AS user,
+	(SELECT COUNT(*) FROM likes WHERE likes.user_id = u2.id) +
+	(SELECT COUNT(*) FROM  media WHERE media.user_id = u2.id) +
+	(SELECT COUNT(*) FROM messages m2 WHERE m2.from_user_id = u2.id)
+	AS Overall_activity
+	FROM users u2
+	ORDER BY Overall_activity
+	LIMIT 10;
+-- не смог подобрать проще.
 
 
    
