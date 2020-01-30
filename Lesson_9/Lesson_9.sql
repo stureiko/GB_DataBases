@@ -42,7 +42,7 @@
 -- # Используя триггеры, добейтесь того, чтобы одно из этих полей или оба поля были заполнены. 
 -- # При попытке присвоить полям NULL-значение необходимо отменить операцию.
 -- # 
--- # (по желанию) Напишите хранимую функцию для вычисления произвольного числа Фибоначчи. 
+-- # 3.3 (по желанию) Напишите хранимую функцию для вычисления произвольного числа Фибоначчи. 
 -- # Числами Фибоначчи называется последовательность в которой число равно сумме двух предыдущих чисел. 
 -- # Вызов функции FIBONACCI(10) должен возвращать число 55.
 -- #
@@ -82,7 +82,7 @@ CREATE VIEW position_catalogs AS
 
 -- данный скрипт отрабатывает на MySQL Workbench, НО отказывается работат в DBeaver!
 
-DELIMITER //
+DELIMITER //;
 
 CREATE FUNCTION hello()
 	RETURNS VARCHAR(255) DETERMINISTIC
@@ -96,12 +96,37 @@ CREATE FUNCTION hello()
 		END CASE;
 	END//
 
-DELIMITER ;
+DELIMITER ;//
 
 -- # 3.2 В таблице products есть два текстовых поля: name с названием товара и description с его описанием. 
 -- # Допустимо присутствие обоих полей или одно из них. Ситуация, когда оба поля принимают неопределенное значение NULL неприемлема. 
 -- # Используя триггеры, добейтесь того, чтобы одно из этих полей или оба поля были заполнены. 
 -- # При попытке присвоить полям NULL-значение необходимо отменить операцию.
 
+DROP TRIGGER IF EXISTS check_products_before;
+DELIMITER //
+CREATE TRIGGER check_products_before BEFORE INSERT ON products
+FOR EACH ROW
+    BEGIN
+        IF (ISNULL(NEW.name) AND ISNULL(NEW.description)) THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'INSERT cancelled';
+        END IF;
+    END//
+DELIMITER ;
 
+-- # 3.3 (по желанию) Напишите хранимую функцию для вычисления произвольного числа Фибоначчи. 
+-- # Числами Фибоначчи называется последовательность в которой число равно сумме двух предыдущих чисел. 
+-- # Вызов функции FIBONACCI(10) должен возвращать число 55.
+
+CREATE FUNCTION fibonacchi(IN num INT)
+	RETURNS INT DETERMINISTIC
+	BEGIN
+		SET @i := 0;
+		SET @s := 0;
+		WHILE @i <= num DO
+			SET @s = @s + @i;
+			SET @i = @i + 1;
+		END WHILE;
+		RETURN @s;
+	END//
 
