@@ -79,22 +79,25 @@ CREATE VIEW position_catalogs AS
 -- # в зависимости от текущего времени суток. 
 -- # С 6:00 до 12:00 функция должна возвращать фразу "Доброе утро", с 12:00 до 18:00 функция должна возвращать фразу "Добрый день", 
 -- # с 18:00 до 00:00 — "Добрый вечер", с 00:00 до 6:00 — "Доброй ночи".
-DELIMITER !
+
+-- данный скрипт отрабатывает на MySQL Workbench, НО отказывается работат в DBeaver!
+
+DELIMITER //
+
 CREATE FUNCTION hello()
-	RETURNS VARCHAR(150) NOT DETERMINISTIC
+	RETURNS VARCHAR(255) DETERMINISTIC
 	BEGIN
-		SELECT @Time := DATE_FORMAT(NOW(), '%H')
+		SET @time := DATE_FORMAT(NOW(), '%H');
 		CASE
-			WHEN @Time BETWEEN 0 AND 6 THEN RETURN 'Доброй ночи';
-			WHEN @Time BETWEEN 7 AND 12 THEN RETURN 'Доброе утро';
-			WHEN @Time BETWEEN 13 AND 18 THEN RETURN 'Добрый день';
-			WHEN @Time BETWEEN 19 AND 0 THEN RETURN 'Добрый вечер';
+			WHEN @time BETWEEN 0 AND 6 THEN RETURN "Доброй ночи";
+			WHEN @time BETWEEN 6 AND 12 THEN RETURN "Доброе утро";
+			WHEN @time BETWEEN 12 AND 18 THEN RETURN "Добрый день";
+			WHEN @time BETWEEN 18 AND 0 THEN RETURN "Добрый вечер";
 		END CASE;
-	END!
+	END//
 
 DELIMITER ;
 
-	
 -- # 3.2 В таблице products есть два текстовых поля: name с названием товара и description с его описанием. 
 -- # Допустимо присутствие обоих полей или одно из них. Ситуация, когда оба поля принимают неопределенное значение NULL неприемлема. 
 -- # Используя триггеры, добейтесь того, чтобы одно из этих полей или оба поля были заполнены. 
