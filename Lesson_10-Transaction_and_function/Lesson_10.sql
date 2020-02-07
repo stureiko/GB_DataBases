@@ -54,7 +54,7 @@ SELECT DISTINCT communities.name,
   FROM communities
     JOIN communities_users
       ON communities.id = communities_users.community_id
-    JOIN users
+    LEFT JOIN users
       ON communities_users.user_id = users.id
     JOIN profiles
       ON users.id = profiles.user_id;
