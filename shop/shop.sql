@@ -39,7 +39,8 @@ CREATE TABLE IF NOT EXISTS users (
   email VARCHAR(120) NOT NULL UNIQUE,
   phone VARCHAR(120) NOT NULL UNIQUE,
   created_at DATETIME DEFAULT NOW(),
-  updated_at DATETIME DEFAULT NOW() ON UPDATE NOW()
+  updated_at DATETIME DEFAULT NOW() ON UPDATE NOW(),
+  user_type_id INT UNSIGNED NOT NULL
 ) COMMENT = 'таблица пользователей';
 
 -- профиль пользователя
@@ -65,7 +66,6 @@ CREATE TABLE IF NOT EXISTS user_adresses(
 -- DROP TABLE IF EXISTS user_types; 
 CREATE TABLE IF NOT EXISTS user_types(
 	user_type_id INT UNSIGNED NOT NULL PRIMARY KEY,
-	user_id INT UNSIGNED NOT NULL,
 	type_name VARCHAR(255) NOT NULL,
 	description TEXT 
 );
@@ -164,9 +164,9 @@ ALTER TABLE user_adresses
 			ON DELETE CASCADE;
 		
 -- связь пользователей и их типов
-ALTER TABLE user_types
+ALTER TABLE users
 	ADD CONSTRAINT user_types_user_id_fk
-		FOREIGN KEY (user_id) REFERENCES users(id)
+		FOREIGN KEY (user_type_id) REFERENCES user_types(user_type_id)
 			ON UPDATE CASCADE
 			ON DELETE CASCADE;
 		
@@ -215,13 +215,13 @@ ALTER TABLE order_products
 		FOREIGN KEY (product_id) REFERENCES products(product_id)
 			ON UPDATE CASCADE;
 
-		
 -- связь типов скидок и самих скидок
 ALTER TABLE user_type_discount
 	ADD CONSTRAINT discount_type_discount_id_fk
 		FOREIGN KEY (discount_id) REFERENCES discounts(discount_id)
 			ON UPDATE CASCADE;
-		
+	
+-- связь скидок и пользователей
 ALTER TABLE user_type_discount
 	ADD CONSTRAINT discount_type_user_type_fk
 		FOREIGN KEY (user_type_id) REFERENCES user_types(user_type_id)
@@ -245,6 +245,11 @@ CREATE INDEX odred_products_idx ON order_products(order_id);
 -- # 1.3 Создание запросов на выборку данных (вьюхи)
 
 
+CREATE VIEW products_like_as AS 
+SELECT p.product_id AS id, p.catalog_id AS catalog, p.name AS product_name FROM products p
+	JOIN product_profile pf
+		ON p.product_id = pf.product_id
+			pf.description = LIKE 'sample string';
 
 
 
